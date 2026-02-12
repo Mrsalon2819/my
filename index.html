@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Hug Day Special 🤗</title>
+<style>
+body {
+    margin:0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(120deg,#6a11cb,#2575fc);
+    text-align:center;
+    color:white;
+    overflow:hidden;
+}
+h1 { margin-top:10px; }
+.section { 
+    padding:40px; 
+    display:none;
+    animation: fade 0.6s;
+}
+.section.active { display:block; }
+
+@keyframes fade {
+    from {opacity:0; transform:scale(0.9);}
+    to {opacity:1; transform:scale(1);}
+}
+
+button {
+    padding:12px 26px;
+    border:none;
+    border-radius:30px;
+    background:#ffb703;
+    color:#333;
+    font-size:18px;
+    cursor:pointer;
+    margin:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.3);
+}
+button:hover {transform:scale(1.05);}
+
+.card {
+    background: rgba(255,255,255,0.15);
+    padding:25px;
+    border-radius:25px;
+    margin:30px auto;
+    width:80%;
+    backdrop-filter: blur(6px);
+}
+
+.progress {
+    height:8px;
+    width:80%;
+    background:rgba(255,255,255,0.3);
+    margin:10px auto;
+    border-radius:10px;
+}
+.bar {
+    height:100%;
+    width:0%;
+    background:white;
+    border-radius:10px;
+    transition:0.4s;
+}
+
+.hug {
+    position:absolute;
+    font-size:28px;
+    animation: float 5s linear infinite;
+}
+@keyframes float {
+    0% {top:100%; opacity:1;}
+    100% {top:-10%; opacity:0;}
+}
+
+#runHug {
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+}
+</style>
+</head>
+<body>
+
+<h1>🤗 Hug Day Love Game 💙</h1>
+<p>Hug Power 💞: <span id="score">0</span></p>
+<div class="progress"><div class="bar" id="bar"></div></div>
+
+<div class="section card active">
+<h2>Hello my comfort zone 🥺</h2>
+<p>Ready for warm virtual hugs? 🤍</p>
+</div>
+
+<div class="section card">
+<h2>Choose Your Hug Style</h2>
+<button onclick="hugStyle('soft')">Soft hug 🧸</button>
+<button onclick="hugStyle('tight')">Tight hug 🤗</button>
+<p id="styleResult"></p>
+</div>
+
+<div class="section card">
+<h2>Hug Counter</h2>
+<p>Tap the hug emoji 10 times!</p>
+<div style="font-size:90px; cursor:pointer;" onclick="hugCount()">🤗</div>
+<p id="hugNum">0 hugs</p>
+</div>
+
+<div class="section card">
+<h2>Catch The Hug</h2>
+<p>Try to catch it!</p>
+<div id="runHug" style="font-size:60px; cursor:pointer;" onclick="catchHug()">🫂</div>
+<p id="catchResult"></p>
+</div>
+
+<div class="section card">
+<h2>Spin The Hug</h2>
+<button onclick="spinHug()">Spin 💫</button>
+<p id="spinResult"></p>
+</div>
+
+<div class="section card">
+<h2>Mood Hug Test</h2>
+<button onclick="mood('happy')">Happy 😄</button>
+<button onclick="mood('sad')">Sad 😔</button>
+<button onclick="mood('tired')">Tired 😴</button>
+<p id="moodResult"></p>
+</div>
+
+<div class="section card">
+<h2>Can I hug you now? 🥺</h2>
+<button onclick="yes()">YES 🤍</button>
+<button onmouseover="no(this)">NO 🙄</button>
+<p id="ans"></p>
+</div>
+
+<div class="section card">
+<h2>Final Surprise 💝</h2>
+<button onclick="finalMsg()">Open</button>
+<p id="final"></p>
+</div>
+
+<button onclick="nextSection()">Next 👉</button>
+
+<script>
+let current = 0;
+let sections = document.querySelectorAll(".section");
+let h = 0;
+let score = 0;
+
+function addScore() {
+    score += 5;
+    document.getElementById("score").innerText = score;
+}
+
+function nextSection() {
+    if(current < sections.length - 1) {
+        sections[current].classList.remove("active");
+        current++;
+        sections[current].classList.add("active");
+        document.getElementById("bar").style.width =
+        ((current+1)/sections.length)*100 + "%";
+    }
+}
+
+function hugStyle(type) {
+    let msg = type=="soft" 
+    ? "Aww 🧸 so warm and gentle 🤍" 
+    : "Oho 🤗 tight hug to my darling kalu barsauli puntu 😅";
+    document.getElementById("styleResult").innerHTML = msg;
+    addScore();
+}
+
+function hugCount() {
+    h++;
+    document.getElementById("hugNum").innerHTML = h + " hugs";
+    if(h == 10) {
+        alert("Achievement: Best Hugger Award 🏆");
+        addScore();
+    }
+}
+
+function catchHug() {
+    let rh = document.getElementById("runHug");
+    rh.style.left = Math.random()*80 + "%";
+    rh.style.top = Math.random()*200 + "px";
+    document.getElementById("catchResult").innerHTML =
+    "Caught 🫂 Now hug me tighter!";
+    addScore();
+}
+
+function spinHug() {
+    let places = ["From behind 🤍","Side hug 😊","Bear hug 🐻","Long hug 🥺"];
+    let pick = places[Math.floor(Math.random()*places.length)];
+    document.getElementById("spinResult").innerHTML =
+    "You got: <b>" + pick + "</b>";
+    addScore();
+}
+
+function mood(type) {
+    let msg = {
+        happy:"Double hug for you 🤗🤗",
+        sad:"Come here 🥺 healing hug 🤍",
+        tired:"Rest on my shoulder 🫂"
+    };
+    document.getElementById("moodResult").innerHTML = msg[type];
+    addScore();
+}
+
+function yes() {
+    document.getElementById("ans").innerHTML =
+    "Already hugging you 🤍🤗";
+    addScore();
+}
+
+function no(btn) {
+    btn.style.position="absolute";
+    btn.style.left=Math.random()*80+"%";
+    btn.style.top=Math.random()*200+"px";
+}
+
+function finalMsg() {
+    document.getElementById("final").innerHTML =
+    "My final hug is forever 🤍<br>No distance, only warmth 🫂<br><br>Your Hug Power: " + score;
+}
+
+setInterval(() => {
+    let hug = document.createElement("div");
+    hug.className = "hug";
+    hug.innerHTML = "🤗";
+    hug.style.left = Math.random()*100 + "vw";
+    document.body.appendChild(hug);
+    setTimeout(()=>hug.remove(),5000);
+}, 600);
+</script>
+
+</body>
+</html>
